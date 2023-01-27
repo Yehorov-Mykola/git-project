@@ -1,98 +1,68 @@
 "use strict"
 
-//1. 
-console.log ('1 завдання - Запорожець');
-const car = {
-    model: 'ZAZ-968',
-    year: 1994,
-    color: 'red',
-    signal: function(){
-        console.log ('fa-fa');
-    } 
-   }
-    console.log(car.color);
-   //1.1
-   car.color = 'blue';
-   console.log(car.color);
-   //1.2
-   car.type = 'elecric';
-   console.log (car)
-   //1.3
-   car.signal();
+//1. Імена
+    let users = ['Mike', 'Nikola', 'Tom'];
+    //1.1
+    console.log(`Другий за індексом елемент - ${users[1]}`);
+    //1.2
+    users.splice(1, 2,)
+    console.log (`Видалили останні 2 елементи - ${users}`);    
+    //1.3
+    console.log(`Довжина масиву - ${users.length}`);
 
-  //2.
-  console.log ('2 завдання - Зарплатня');  
-  const salaries = {
-    frontend: 12000,
-    backend: 10000,
-    designer: 8000,
-    dayPay() {
-      console.log('We must pay salary ');
-    },
-    total() {
-      let salarySum = 0;
-        for (const key in salaries){
-          if(!isNaN(salaries[key])){
-            salarySum += salaries[key];
-          }          
-        }
-    console.log(salarySum);
-       }  
-  }   
-  salaries.total();
-  salaries.manager = 5000;
-  salaries.total();
+//2. Порівняння масивів
+    let a = [5, 3, -4, 25, 32, -16, 6];
+    let b = [21, -30, 9, 5, 12, -19, 5, 25];
 
-  //3. Функція-конструктор
-  console.log ('3 завдання - Функція-конструктор');
-  function Laptop(brand, system, cost){
-    this.brand = brand;
-    this.system = system;
-    this.cost = cost;
-   }
-   let dell = new Laptop('Dell', 'windows', '800');
-   let apple = new Laptop('Apple', 'MAC OS', '1700');
+    const sumArrA = a.reduce((accumulator, currentValue) => accumulator + currentValue);
 
-   console.log(dell);
-   console.log(apple);
+    const sumArrB = b.reduce((accumulator, currentValue) => accumulator + currentValue);
 
-  //4. Додаємо таски
-  console.log ('4 завдання - Таски');
-let taskName, taskStatus, taskText
+    if (sumArrA > sumArrB){
+        console.log('a > b');
+    }
+    else if (sumArrA < sumArrB){
+        console.log('a < b');
+    }
+    else {
+        console.log('a == b');
+    }
 
-  const tasks = {
-    Anna: {
-      status: 'new',
-      text: 'Create checkout page'
-    }, 
-    Ihor: {
-      status: 'done',
-      text: 'Add styles to header'
-    } 
-  }
+    //3. Кожне слово - елемент масиву
+    let phrase = 'I am learning JavaScript right now';
+    console.log(phrase.split(' '));
 
-  console.log(tasks);
+    //4. Копіювання елементів масиву
+    //Назвав масиви c та d, тому що a і b вже були вище
+    let c = [5, 3, 8, 5, 3, 2, 1, 2];
+    let d = [];
 
+    c.forEach((item) => {
+        if (d.includes(item) === false){
+            d.push(item);
+        }        
+    })
+    console.log(d);
 
-  taskName = prompt("Enter Name", 'Name');
+    //5. Знайти та вивсети всі номери об'єктів, від 18 до 21
+    let usersAge = [{id: 1, age: 17},
+                    {id: 2, age: 18},
+                    {id: 3, age: 19},
+                    {id: 4, age: 21},
+                    {id: 5, age: 17},
+                    {id: 6, age: 20},
+                    {id: 7, age: 25}];
 
-  while (tasks.hasOwnProperty(taskName)){
-    taskName = prompt("This name is taken. Enter another name", 'Name');
-  }
+    function selectionAge(arr){
+        let newAge = [];
+        newAge = arr.filter(user => (user.age > 18) && (user.age < 21));        
+        let newId = [];
+        newAge.forEach((user) => {
+            newId.push(user.id);            
+        })
+        console.log(...newId);
+    }
 
-  taskStatus = prompt("Enter task Status", 'new');
-  while(taskStatus.toLowerCase() !== 'done' && taskStatus.toLowerCase() !== 'new'){
-    taskStatus = prompt("Enter correct task Status", 'new');
-}
+    selectionAge(usersAge);
 
-  taskText = prompt("Enter taskText", '1');
- 
-  tasks [taskName] = {status: taskStatus, text: taskText};
-  console.log(tasks);
-
-
-
-
-
-   
 
