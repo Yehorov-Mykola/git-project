@@ -5,7 +5,8 @@
     //1.1
     console.log(`Другий за індексом елемент - ${users[1]}`);
     //1.2
-    users.splice(1, 2,)
+    // Тут краще робити через довжину масиву. Бо ви не завжди будете впевнені, що маси саме з 3-х елементів складається. А так, скільки б елементів в масиві не було - ви завжди видалите останні 2
+    users.splice(users.length - 2, users.length - 1);
     console.log (`Видалили останні 2 елементи - ${users}`);    
     //1.3
     console.log(`Довжина масиву - ${users.length}`);
@@ -14,6 +15,7 @@
     let a = [5, 3, -4, 25, 32, -16, 6];
     let b = [21, -30, 9, 5, 12, -19, 5, 25];
 
+    // Круто, що розібралися з редьюсом) Я в свій час коли навчалася довго не могла зрозуміти як він працює 
     const sumArrA = a.reduce((accumulator, currentValue) => accumulator + currentValue);
 
     const sumArrB = b.reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -38,7 +40,9 @@
     let d = [];
 
     c.forEach((item) => {
-        if (d.includes(item) === false){
+        // Так трошки коротше виходить. Взагалі хороша практика - не порівнювати з true або false
+        // якщо хочемо перевірити на true - if (d.includes(item)), якщо на false - if (!d.includes(item))
+        if (!d.includes(item)){
             d.push(item);
         }        
     })
@@ -55,12 +59,9 @@
 
     function selectionAge(arr){
         let newAge = [];
-        newAge = arr.filter(user => (user.age > 18) && (user.age < 21));        
-        let newId = [];
-        newAge.forEach((user) => {
-            newId.push(user.id);            
-        })
-        console.log(...newId);
+        // Ось так ще можна. Це такий, більш розповсюджений варіант схожих задач
+        newAge = arr.filter(user => user.age > 18 && user.age < 21).map(user =>  user.id);        
+        console.log(...newAge)
     }
 
     selectionAge(usersAge);
