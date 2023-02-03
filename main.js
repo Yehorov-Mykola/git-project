@@ -1,68 +1,85 @@
 "use strict"
 
-//1. Імена
-    let users = ['Mike', 'Nikola', 'Tom'];
-    //1.1
-    console.log(`Другий за індексом елемент - ${users[1]}`);
-    //1.2
-    users.splice(1, 2,)
-    console.log (`Видалили останні 2 елементи - ${users}`);    
-    //1.3
-    console.log(`Довжина масиву - ${users.length}`);
-
-//2. Порівняння масивів
-    let a = [5, 3, -4, 25, 32, -16, 6];
-    let b = [21, -30, 9, 5, 12, -19, 5, 25];
-
-    const sumArrA = a.reduce((accumulator, currentValue) => accumulator + currentValue);
-
-    const sumArrB = b.reduce((accumulator, currentValue) => accumulator + currentValue);
-
-    if (sumArrA > sumArrB){
-        console.log('a > b');
+//1. Клас User та захищенність
+class User{
+  #name;
+  constructor(name, login, age){
+    this.#name = name;
+    this.login = login;
+    this.age = age; 
+  }
+  
+  getName(isAdmin){
+    if(isAdmin) {
+      if (this.#name !== ""){
+        return this.#name;
+      }
+      else{
+        return this.login;
+      }
     }
-    else if (sumArrA < sumArrB){
-        console.log('a < b');
+    else{
+      return ('Permission denied')
     }
-    else {
-        console.log('a == b');
+  }
+
+  ChangeName(name, password){
+    if(password === '123') {;
+        let oldName =  this.#name;
+        this.#name = name;
+        return `Name Changed from ${oldName} to ${this.#name}`;
     }
-
-    //3. Кожне слово - елемент масиву
-    let phrase = 'I am learning JavaScript right now';
-    console.log(phrase.split(' '));
-
-    //4. Копіювання елементів масиву
-    //Назвав масиви c та d, тому що a і b вже були вище
-    let c = [5, 3, 8, 5, 3, 2, 1, 2];
-    let d = [];
-
-    c.forEach((item) => {
-        if (d.includes(item) === false){
-            d.push(item);
-        }        
-    })
-    console.log(d);
-
-    //5. Знайти та вивсети всі номери об'єктів, від 18 до 21
-    let usersAge = [{id: 1, age: 17},
-                    {id: 2, age: 18},
-                    {id: 3, age: 19},
-                    {id: 4, age: 21},
-                    {id: 5, age: 17},
-                    {id: 6, age: 20},
-                    {id: 7, age: 25}];
-
-    function selectionAge(arr){
-        let newAge = [];
-        newAge = arr.filter(user => (user.age > 18) && (user.age < 21));        
-        let newId = [];
-        newAge.forEach((user) => {
-            newId.push(user.id);            
-        })
-        console.log(...newId);
+    else{
+      return ('Permission denied')
     }
+  }
+}
 
-    selectionAge(usersAge);
+class UserPhone{
+  #phone;
+  constructor(name, phone){    
+    this.name = name;
+    this.#phone = phone;
+    }
+    getPhone(isAdmin){
+      if(isAdmin) {
+        return this.#phone;
+      }
+      else{
+        let arrayOfPhone = this.#phone.split('-');
+        arrayOfPhone.splice(1, 2, '*****');
+        const secretPhone = arrayOfPhone.join('-');
+        return secretPhone;
+      }
+    }
+}
 
+//1. Клас юзер та захищенність
+let user1 = new User ('Mike', 'MK_18', 18);
+let user2 = new User ('', 'NRG', 22); 
+
+console.log('1. Клас User та захищенність:');
+console.log(user1.login);
+console.log(user1.age);
+console.log(user2.login);
+console.log(user2.age);
+
+//2. повернення імені користувача
+console.log('2. Повернення імені користувача:');
+console.log(user1.getName(true));
+console.log(user2.getName(true));
+console.log(user2.getName(false));
+
+//3. Зміна імені користувача за паролем
+console.log('3. Зміна імені користувача за паролем:');
+console.log(user1.ChangeName('Bill', '123'));
+
+//5. Шифрований номер телефону
+console.log('5. Шифрований номер телефону:');
+let userPhone1 = new UserPhone('Mike', '067-888-88-99');
+let userPhone2 = new UserPhone('Tom', '099-888-88-99');
+console.log(userPhone1.getPhone(false));
+console.log(userPhone2.getPhone(false));
+console.log(userPhone1.getPhone(true));
+console.log(userPhone2.getPhone(true));
 
