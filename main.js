@@ -1,68 +1,91 @@
 "use strict"
 
-//1. Імена
-    let users = ['Mike', 'Nikola', 'Tom'];
-    //1.1
-    console.log(`Другий за індексом елемент - ${users[1]}`);
-    //1.2
-    users.splice(1, 2,)
-    console.log (`Видалили останні 2 елементи - ${users}`);    
-    //1.3
-    console.log(`Довжина масиву - ${users.length}`);
+//1. Сума всіх елементів масиву
+let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-//2. Порівняння масивів
-    let a = [5, 3, -4, 25, 32, -16, 6];
-    let b = [21, -30, 9, 5, 12, -19, 5, 25];
+function sumArr(arr, sum = 0, i = 0) {
+    if (arr[i]) {
+		return sumArr(arr, sum + arr[i], ++i)
+	} else {
+		return sum
+	}
+}
+console.log('1. Сума всіх елементів масиву');
+console.log(sumArr(a));
 
-    const sumArrA = a.reduce((accumulator, currentValue) => accumulator + currentValue);
+//2. Кількість усіх елементів у масиві
+const arr1 = [];
+const arr2 = [1, 2, 3];
+const arr3 = ['x', 'y', ['z']];
+const arr4 = [1, 2, [3, 4, [5]]];
+const arr5 = [[[[]]]];
 
-    const sumArrB = b.reduce((accumulator, currentValue) => accumulator + currentValue);
+let count = 0;
 
-    if (sumArrA > sumArrB){
-        console.log('a > b');
+function deepCount(arr, reset = false) {
+  if(reset) count = 0
+  for (const item of arr) {
+    if (Array.isArray(item)) {
+      count++;
+      deepCount(item);
+    }else {
+      count++
     }
-    else if (sumArrA < sumArrB){
-        console.log('a < b');
+  }
+  return count
+}
+
+console.log('2. Кількість усіх елементів у масивах');
+console.log(deepCount(arr1, true));
+console.log(deepCount(arr2, true));
+console.log(deepCount(arr3, true));
+console.log(deepCount(arr4, true));
+console.log(deepCount(arr5, true));
+
+//3. Замикання
+let employees = {
+    development: {
+    backend: [{name: 'Mike', salary: 2000}, {name: 'Nikola', salary: 2500}],
+    frontend: [{name: 'Artem', salary: 3000}, {name: 'Alex', salary: 2700}],
+    },
+    sales: {
+        marketing: {
+            internet_marketers: [{name: 'Nina', salary: 1000}, {name: 'Olena', salary: 1300}],
+            promotion: [{name: 'Oleg', salary: 1400}, {name: 'Masha', salary: 1700}],
+            },
+        sellers: [{name: 'Max', salary: 900}, {name: 'Donald', salary: 700}, {name: 'Joe', salary: 1100}]
+        },
+    designer: [{name: 'Kate', salary: 1800}]
+}
+
+function takeSumSallary(){
+    let sum = 0;
+    return function sumSallary(obj)
+    {
+     for(let key in obj)
+        {
+            if (Array.isArray(obj[key]))
+                {
+                    obj[key].forEach(employee => sum += employee.salary);
+                } 
+            else 
+                {
+                    sumSallary(obj[key]);
+                }
+        }
+        return sum;
     }
-    else {
-        console.log('a == b');
-    }
+}
+const sumSalary = takeSumSallary();
+console.log('3. Замикання. Сума зарплатні усіх працівників');
+console.log(sumSalary(employees));
 
-    //3. Кожне слово - елемент масиву
-    let phrase = 'I am learning JavaScript right now';
-    console.log(phrase.split(' '));
+//4. Найбільше число в трьох масивах
+let arrOne = [2, 15, 7 ,3];
+let arrTwo = [9, 3, 17, 12, 4, 8];
+let arrThree = [6, 11, 16, 15, 11];
 
-    //4. Копіювання елементів масиву
-    //Назвав масиви c та d, тому що a і b вже були вище
-    let c = [5, 3, 8, 5, 3, 2, 1, 2];
-    let d = [];
-
-    c.forEach((item) => {
-        if (d.includes(item) === false){
-            d.push(item);
-        }        
-    })
-    console.log(d);
-
-    //5. Знайти та вивсети всі номери об'єктів, від 18 до 21
-    let usersAge = [{id: 1, age: 17},
-                    {id: 2, age: 18},
-                    {id: 3, age: 19},
-                    {id: 4, age: 21},
-                    {id: 5, age: 17},
-                    {id: 6, age: 20},
-                    {id: 7, age: 25}];
-
-    function selectionAge(arr){
-        let newAge = [];
-        newAge = arr.filter(user => (user.age > 18) && (user.age < 21));        
-        let newId = [];
-        newAge.forEach((user) => {
-            newId.push(user.id);            
-        })
-        console.log(...newId);
-    }
-
-    selectionAge(usersAge);
-
-
+let newArr = [...arrOne, ...arrTwo, ...arrThree];
+const maxNumber = Math.max(...newArr);
+console.log('4. Найбільше число в трьох масивах');
+console.log(maxNumber);
