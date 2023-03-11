@@ -1,110 +1,72 @@
-"use strict"
+"use strict";
 
-//1. Об'єкт car
-let car = {
-  type: "electric",
-  wheels: 4
+//1
+fetch("http://127.0.0.1:5500/home-work-data.json")
+  .then((response) => response.json())
+  .then((data) => {
+    for (let name in data) {
+      if (data[name].isAdmin === true) {
+        console.log("1. IsAdmin == true has ", name);
+      }
+    }
+  });
+
+//2
+let nikola = { firstName: "Nikola", lastName: "Tesla" };
+let bob = { firstName: "Bob" };
+let mike = { lastName: "Smith" };
+let michael = {};
+
+let getFullName = function (user) {
+  return `${user.firstName} ${user.lastName}`;
 };
 
-let sportCar = {
-  doors: 2
-};
+getFullName = new Proxy(getFullName, {
+  apply(target, thisArg, args) {
+    if (args[0].firstName === undefined && args[0].lastName === undefined) {
+      return "No name";
+    }
+    if (args[0].firstName === undefined) {
+      return args[0].lastName;
+    }
+    if (args[0].lastName === undefined) {
+      return args[0].firstName;
+    }
+    return target(...args);
+  },
+});
+console.log("2 task:");
+console.log(getFullName(nikola));
+console.log(getFullName(mike));
+console.log(getFullName(michael));
+console.log(getFullName(bob));
 
-let passengerCar = {
-  doors: 4
-};
+//3
+let users = [
+  { name: "Nikola", age: 18, id: 1 },
+  { name: "Bob", age: 25, id: 2 },
+  { name: "Mike", age: 32, id: 3 },
+];
 
-let toyCar = {
-  type: "toy"
-};
+localStorage.setItem("users", JSON.stringify(users));
 
-Object.setPrototypeOf(sportCar, car);
-console.log(sportCar.wheels)
-
-Object.setPrototypeOf(passengerCar, car);
-console.log(passengerCar.type)
-
-Object.setPrototypeOf(toyCar, sportCar);
-console.log(toyCar.type)
-console.log(toyCar.wheels)
-
-
-//2. Виправити код. Я так зрозумів, що можна було будь-яким способом виправити код
-let frontendEmployees = {
-  wallet:{},
-  pay(munth, sum) {
-    this.wallet[munth] = sum;
-  }
-};
-
-let backendEmployees = {
-  wallet:{},
-  pay(munth, sum) {
-    this.wallet[munth] = sum;
-  }
-};
-
-let frontendDeveloper = {
-  name: 'Mike',
-}
-Object.setPrototypeOf(frontendDeveloper, frontendEmployees);
-
-let backendDeveloper = {
-  name: 'Bob',
-}
-Object.setPrototypeOf(backendDeveloper, backendEmployees);
-backendDeveloper.pay('june', 1500);
-frontendDeveloper.pay('june', 2000);
-console.log(backendDeveloper.wallet.june);
-console.log(frontendDeveloper.wallet.june);
-
-//3. Створити нового користувача
-function User(name, age){
-  this.name = name;
-  this.age = age
-}
-let user_1 = new User ('Mike', 18);
-let user_2 = new user_1.constructor ('Bob', 25);
-console.log(user_1);
-console.log(user_2);
-
-//4. Створити нового користувача. 1 варіант
-
-function UserType(name){
-  for(let i = 0; i < name.length; ++i){
-    this[i] = name[i];
-    if(i + 1 == name.length){
-      Object.defineProperty(this, 'length', {
-        enumerable: true,
-        writable: false,
-        configurable: true,
-        value: i + 1
-      });
+function sayHelloToUser(id) {
+  const arrUsers = JSON.parse(localStorage.getItem("users"));
+  for (let user of arrUsers) {
+    if (user.id === id) {
+      console.log("Hello", user.name);
     }
   }
 }
-let admits = new UserType(['Mike', 'Bob', 'Nikola']);
+console.log("3 task:");
+sayHelloToUser(1);
 
-admits.join = Array.prototype.join;
-console.log(admits.join('; '));
+//4
+const input = document.querySelector("input");
+input.addEventListener("change", keepData);
 
-
-//4. Створити нового користувача. 2 варіант
-function UserType2(name){
-  for(let i = 0; i < name.length; ++i){
-    this[i] = name[i];
-    if(i + 1 == name.length){
-      Object.defineProperty(this, 'length', {
-        enumerable: true,
-        writable: false,
-        configurable: true,
-        value: i + 1
-      });
-    }
-  }
-  this.join = Array.prototype.join;
+function keepData() {
+  let dataInput = input.value;
+  localStorage.setItem("dataInput", JSON.stringify(dataInput));
 }
-let admits2 = new UserType2(['Mike', 'Bob', 'Nikola']);
-
-console.log(admits2.join('; '));
-
+input.value = JSON.parse(localStorage.getItem("dataInput"));
